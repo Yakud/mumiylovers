@@ -50,12 +50,11 @@ func (t *HeartBulletGunSystem) Update(dt float32) {
 		bullet := t.bullets[i]
 
 		bullet.Position.Add(engo.Point{
-			X: math.Cos(bullet.Direction()) * 60 * dt * bullet.Speed(),
-			Y: math.Sin(bullet.Direction()) * 60 * dt * bullet.Speed(),
+			X: math.Cos(bullet.Direction()*math.Pi/180) * 60 * dt * bullet.Speed(),
+			Y: math.Sin(bullet.Direction()*math.Pi/180) * 60 * dt * bullet.Speed(),
 		})
-		bullet.AddSpeed(60 * dt * 0.01)
 
-		bullet.Rotation += 60 * dt * bullet.Speed() * 5
+		//bullet.Rotation += 60 * dt * bullet.Speed() * 5
 
 		if bullet.Position.X > 1024 || bullet.Position.X < 0 ||
 			bullet.Position.Y > 768 || bullet.Position.Y < 0 {
@@ -68,10 +67,15 @@ func (t *HeartBulletGunSystem) Update(dt float32) {
 
 func (t *HeartBulletGunSystem) CreateBullet() {
 	bullet := t.bulletsPool.Get().(*entities.HeartBullet)
-	bullet.Position.Set(t.mumiy.Position.X+85, t.mumiy.Position.Y+30)
-	bullet.SetDirection(float32(rand.Intn(359)))
+
+	bullet.Position.Set(
+		t.mumiy.Pos.X+math.Cos(t.mumiy.Rotation*math.Pi/180)*50,
+		t.mumiy.Pos.Y+math.Sin(t.mumiy.Rotation*math.Pi/180)*35,
+	)
+
+	bullet.SetDirection(t.mumiy.Rotation)
 	bullet.SetSpeed(float32(6 + rand.Intn(10)))
-	bullet.SetSpeed(1)
+	bullet.SetSpeed(15)
 
 	t.bulletsMutex.Lock()
 	t.bullets = append(t.bullets, bullet)
@@ -111,7 +115,7 @@ func NewHeartBulletGunSystem(world *ecs.World, mumiy *entities.Mumiy) *HeartBull
 		world: world,
 
 		bulletsMutex:     &sync.Mutex{},
-		bulletReloadTime: 0.01,
+		bulletReloadTime: 0.1,
 
 		bulletsPool: &sync.Pool{
 			New: func() interface{} { return CreateBulletInstance() },

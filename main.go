@@ -27,7 +27,7 @@ func (*myScene) Setup(world *ecs.World) {
 
 	mumiy := entities.NewMumiy(world)
 
-	world.AddSystem(systems.NewPlayerMovementSystem(mumiy))
+	world.AddSystem(systems.NewPlayerMovementSystem(world, mumiy))
 	world.AddSystem(systems.NewHeartBulletGunSystem(world, mumiy))
 
 	for _, system := range world.Systems() {
