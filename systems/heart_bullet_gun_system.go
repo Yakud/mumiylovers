@@ -103,17 +103,19 @@ func (t *HeartBulletGunSystem) DestroyBullet(index int) {
 	}
 }
 
+func (t *HeartBulletGunSystem) Add(world *ecs.World, mumiy *entities.Mumiy) {
+	t.mumiy = mumiy
+	t.world = world
+}
+
 func CreateBulletInstance() *entities.HeartBullet {
 	return entities.NewHeartBullet()
 }
 
-func NewHeartBulletGunSystem(world *ecs.World, mumiy *entities.Mumiy) *HeartBulletGunSystem {
+func NewHeartBulletGunSystem() *HeartBulletGunSystem {
 	engo.Input.RegisterButton("Shot", engo.Space)
 
 	return &HeartBulletGunSystem{
-		mumiy: mumiy,
-		world: world,
-
 		bulletsMutex:     &sync.Mutex{},
 		bulletReloadTime: 0.1,
 

@@ -82,13 +82,10 @@ func (t *PlayerMovementSystem) Update(dt float32) {
 	t.mumiy.Position.Y = t.mumiy.Pos.Y - t.mumiy.Anchor().Y*float32(cos) - t.mumiy.Anchor().X*float32(sin)
 }
 
-func NewPlayerMovementSystem(world *ecs.World, mumiy *entities.Mumiy) *PlayerMovementSystem {
-	engo.Input.RegisterButton("MoveUp", engo.ArrowUp)
-	engo.Input.RegisterButton("MoveDown", engo.ArrowDown)
-	engo.Input.RegisterButton("MoveLeft", engo.ArrowLeft)
-	engo.Input.RegisterButton("MoveRight", engo.ArrowRight)
+func (t *PlayerMovementSystem) Add(mumiy *entities.Mumiy) {
+	t.mumiy = mumiy
+}
 
-	return &PlayerMovementSystem{
-		mumiy: mumiy,
-	}
+func NewPlayerMovementSystem() *PlayerMovementSystem {
+	return &PlayerMovementSystem{}
 }

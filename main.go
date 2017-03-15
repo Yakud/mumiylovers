@@ -22,18 +22,26 @@ func (*myScene) Preload() {
 // Setup is called before the main loop starts. It allows you
 // to add entities and systems to your Scene.
 func (*myScene) Setup(world *ecs.World) {
+	engo.Input.RegisterButton("MoveUp", engo.ArrowUp)
+	engo.Input.RegisterButton("MoveDown", engo.ArrowDown)
+	engo.Input.RegisterButton("MoveLeft", engo.ArrowLeft)
+	engo.Input.RegisterButton("MoveRight", engo.ArrowRight)
+
 	world.AddSystem(&common.RenderSystem{})
 	world.AddSystem(&common.MouseSystem{})
+	world.AddSystem(&systems.PlayerMovementSystem{})
+	world.AddSystem(systems.NewHeartBulletGunSystem())
 
 	mumiy := entities.NewMumiy(world)
-
-	world.AddSystem(systems.NewPlayerMovementSystem(world, mumiy))
-	world.AddSystem(systems.NewHeartBulletGunSystem(world, mumiy))
 
 	for _, system := range world.Systems() {
 		switch sys := system.(type) {
 		case *common.RenderSystem:
 			sys.Add(&mumiy.BasicEntity, &mumiy.RenderComponent, &mumiy.SpaceComponent)
+		case *systems.PlayerMovementSystem:
+			sys.Add(mumiy)
+		case *systems.HeartBulletGunSystem:
+			sys.Add(world, mumiy)
 		}
 	}
 }
