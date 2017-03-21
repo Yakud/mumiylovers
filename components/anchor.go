@@ -4,15 +4,15 @@ import "engo.io/engo"
 
 // A entity has a direction
 type AnchorComponent struct {
-	anchor engo.Point
+	Anchor engo.Point
 }
 
 // Speed getter
-func (t *AnchorComponent) Anchor() engo.Point {
-	return t.anchor
+func (t *AnchorComponent) GetAnchor() engo.Point {
+	return t.Anchor
 }
 
 // Speed setter
 func (t *AnchorComponent) SetAnchor(anchor engo.Point) {
-	t.anchor = anchor
+	t.Anchor = anchor
 }

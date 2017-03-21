@@ -78,8 +78,8 @@ func (t *PlayerMovementSystem) Update(dt float32) {
 	//((xoffset)*cos(convert_dir_to_radian))-((yoffset)*sin(convert_dir_to_radian));
 	//((yoffset)*cos(convert_dir_to_radian))+((xoffset)*sin(convert_dir_to_radian));
 	sin, cos := math.Sincos(float64(t.mumiy.Rotation) * math.Pi / 180)
-	t.mumiy.Position.X = t.mumiy.Pos.X - t.mumiy.Anchor().X*float32(cos) + t.mumiy.Anchor().Y*float32(sin)
-	t.mumiy.Position.Y = t.mumiy.Pos.Y - t.mumiy.Anchor().Y*float32(cos) - t.mumiy.Anchor().X*float32(sin)
+	t.mumiy.Position.X = t.mumiy.Pos.X - t.mumiy.GetAnchor().X*float32(cos) + t.mumiy.GetAnchor().Y*float32(sin)
+	t.mumiy.Position.Y = t.mumiy.Pos.Y - t.mumiy.GetAnchor().Y*float32(cos) - t.mumiy.GetAnchor().X*float32(sin)
 }
 
 func (t *PlayerMovementSystem) Add(mumiy *entities.Mumiy) {

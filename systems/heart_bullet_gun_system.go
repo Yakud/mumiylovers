@@ -54,7 +54,7 @@ func (t *HeartBulletGunSystem) Update(dt float32) {
 			Y: math.Sin(bullet.Direction()*math.Pi/180) * 60 * dt * bullet.Speed(),
 		})
 
-		//bullet.Rotation += 60 * dt * bullet.Speed() * 5
+		bullet.Rotation += 60 * dt * bullet.Speed() * 2
 
 		if bullet.Position.X > 1024 || bullet.Position.X < 0 ||
 			bullet.Position.Y > 768 || bullet.Position.Y < 0 {
@@ -74,8 +74,9 @@ func (t *HeartBulletGunSystem) CreateBullet() {
 	)
 
 	bullet.SetDirection(t.mumiy.Rotation)
+	bullet.SetDirection(float32(rand.Intn(360)))
 	bullet.SetSpeed(float32(6 + rand.Intn(10)))
-	bullet.SetSpeed(15)
+	bullet.SetSpeed(4)
 
 	t.bulletsMutex.Lock()
 	t.bullets = append(t.bullets, bullet)
@@ -117,7 +118,7 @@ func NewHeartBulletGunSystem() *HeartBulletGunSystem {
 
 	return &HeartBulletGunSystem{
 		bulletsMutex:     &sync.Mutex{},
-		bulletReloadTime: 0.1,
+		bulletReloadTime: 0.005,
 
 		bulletsPool: &sync.Pool{
 			New: func() interface{} { return CreateBulletInstance() },
